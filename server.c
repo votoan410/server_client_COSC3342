@@ -5,10 +5,14 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 #define PORT 8000
 
 int main(int argc, char const *argv[]) 
 { 
+	int arr[51];
+	
 	char buff[1024]; 
   int socketfd, addrlen, n;
   socketfd = socket(AF_INET,SOCK_STREAM,0);
@@ -34,22 +38,47 @@ int main(int argc, char const *argv[])
   if( listen(socketfd, backlog) < 0){
   	printf("error");
   	}
-   
-   //read from client 	
-   read(socketfd, buff, sizeof(buff));
-   printf("from client: %s\n",buff ); 
+  
    
   	
   struct sockaddr_in add_c;
   int c_len = sizeof(add_c); //address length for the incoming connection
   
   char *hello = "Hello from server";
+  
+  
   while(1){
     //accept(socketfd, (struct sockaddr *)&add_c, &c_len); 
-    if ( accept(socketfd, (struct sockaddr *)&add_c, &c_len) < 0){
+    int confd = accept(socketfd, (struct sockaddr *)&add_c, &c_len);
+    if ( confd < 0){
     	printf("errors");
     	}
-   
+   while(1){
+   		read (confd, buff, sizeof(buff)); //read from client
+  		// print buffer which contains the client contents 
+   		printf("From client: %s \n", buff); 
+   }
   }
   
-} 
+}
+
+
+//The function randperm randomly permutes the first N elements
+//of an array r
+int randperm(int *r,int N)
+{
+        int i,j;
+        int temp;
+        srand(time(0));
+
+        for (i = N-1; i >= 0; --i)
+        {
+    //generate a random number [0, n-1]
+                j = rand() % (i+1);
+    //swap the last element with element at random index
+                temp = r[i];
+                r[i] = r[j];
+                r[j] = temp;
+        }
+   }
+ 

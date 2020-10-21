@@ -2,7 +2,7 @@
 #include <time.h>
 //The function randperm randomly permutes the first N elements
 //of an array r
-int randperm(int *r,int N)
+extern int randperm(int *r,int N)
 {
         int i,j;
         int temp;
