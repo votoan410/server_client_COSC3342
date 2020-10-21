@@ -11,9 +11,9 @@
 
 int main(int argc, char const *argv[]) 
 { 
-	int arr[51];
+ int arr[51];
 	
-	char buff[1024]; 
+  char buff[1024]= "hello from the server"; 
   int socketfd, addrlen, n;
   socketfd = socket(AF_INET,SOCK_STREAM,0);
   
@@ -46,39 +46,24 @@ int main(int argc, char const *argv[])
   
   char *hello = "Hello from server";
   
-  
+  int flag = 1;
+  int size = sizeof(buff);
+
   while(1){
     //accept(socketfd, (struct sockaddr *)&add_c, &c_len); 
     int confd = accept(socketfd, (struct sockaddr *)&add_c, &c_len);
     if ( confd < 0){
     	printf("errors");
     	}
-   while(1){
+
+/*   while(1){
    		read (confd, buff, sizeof(buff)); //read from client
   		// print buffer which contains the client contents 
    		printf("From client: %s \n", buff); 
-   }
+   }*/
+    
+    	ssize_t send(socketfd, buff, size,flag);	
   }
   
 }
 
-
-//The function randperm randomly permutes the first N elements
-//of an array r
-int randperm(int *r,int N)
-{
-        int i,j;
-        int temp;
-        srand(time(0));
-
-        for (i = N-1; i >= 0; --i)
-        {
-    //generate a random number [0, n-1]
-                j = rand() % (i+1);
-    //swap the last element with element at random index
-                temp = r[i];
-                r[i] = r[j];
-                r[j] = temp;
-        }
-   }
- 
