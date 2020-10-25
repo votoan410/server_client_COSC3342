@@ -11,9 +11,27 @@
 
 int main(int argc, char const *argv[]) 
 { 
- int arr[51];
-	
-  char buff[1024]= "hello from the server"; 
+
+  //////////////////////////////////////////////
+  int arr_size = 51;
+  int arr[arr_size];// create array of 51 cards
+  for (int i = 0; i < arr_size; i++) {
+    arr[i] = i+1;
+    printf("value at index %u: %u\n", arr[i], arr[i]);
+  }
+  
+  randperm((int *)arr, arr_size);//shuffle the array 
+  
+  printf("\nafter randperm :\n\n"); 
+  
+  for (int i = 0; i < arr_size; i++) {
+    printf("value at index %u: %u\n", i+1, arr[i]);
+  }
+  char buff[100]; //contains integer
+  //////////////////////////////////////////////
+  
+  
+	char *hello = "hello from the server"; 
   int socketfd, addrlen, n;
   socketfd = socket(AF_INET,SOCK_STREAM,0);
   
@@ -40,14 +58,13 @@ int main(int argc, char const *argv[])
   	}
   
    
-  	
+  //struct created for client (incoming connection) 	
   struct sockaddr_in add_c;
   int c_len = sizeof(add_c); //address length for the incoming connection
   
-  char *hello = "Hello from server";
-  
-  int flag = 1;
-  int size = sizeof(buff);
+  //parameters for send function
+  int flag = 0;
+  size_t size = strlen(hello); 
 
   while(1){
     //accept(socketfd, (struct sockaddr *)&add_c, &c_len); 
@@ -55,14 +72,34 @@ int main(int argc, char const *argv[])
     if ( confd < 0){
     	printf("errors");
     	}
-
-/*   while(1){
-   		read (confd, buff, sizeof(buff)); //read from client
-  		// print buffer which contains the client contents 
-   		printf("From client: %s \n", buff); 
-   }*/
+    	
+  /*//read from client : 
+    read (confd, buff, sizeof(buff));
+    printf("From client: %s \n", buff);*/
     
-    	ssize_t send(socketfd, buff, size,flag);	
+    /*
+    send(confd, hello, size,flag);
+    printf("test message sent\n"); */
+    	
+    	
+    /*write to and and send the buffer to client
+      int i = 1;      
+      sprintf(buff, "card %u: %u \n", i + 1, arr[i]);
+      size_t size_int = strlen(buff); 
+      send(confd, buff, size_int,flag); */
+    
+    
+    //deal one card to client until the deck is exhasted/*
+    for (int i = 0; i < arr_size; i++) {
+      int card_num = i + 1;
+      printf("sending card %u: %u\n", card_num, arr[i]);  
+           
+      //write to and and send the buffer to client    
+        
+      sprintf(buff, "card %u: %u \n", card_num, arr[i]);
+      size_t size_int = strlen(buff); 
+      send(confd, buff, size_int,flag);
+    } 
   }
   
 }
