@@ -80,14 +80,7 @@ int main(int argc, char const *argv[])
     /*
     send(confd, hello, size,flag);
     printf("test message sent\n"); */
-    	
-    	
-    /*write to and and send the buffer to client
-      int i = 1;      
-      sprintf(buff, "card %u: %u \n", i + 1, arr[i]);
-      size_t size_int = strlen(buff); 
-      send(confd, buff, size_int,flag); */
-    
+
     
     //deal one card to client until the deck is exhasted/*
     for (int i = 0; i < arr_size; i++) {
@@ -100,7 +93,8 @@ int main(int argc, char const *argv[])
       size_t size_int = strlen(buff); 
       send(confd, buff, size_int,flag);
     } 
+    break;
   }
-  
+  return 0;
 }
 
