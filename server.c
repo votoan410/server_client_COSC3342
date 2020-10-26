@@ -92,7 +92,8 @@ int main(int argc, char const *argv[])
       sprintf(buff, "card %u: %u \n", card_num, arr[i]);
       size_t size_int = strlen(buff); 
       send(confd, buff, size_int,flag);
-    } 
+    }
+    close(socketfd);  
     break;
   }
   return 0;
