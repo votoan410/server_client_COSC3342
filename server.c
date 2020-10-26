@@ -72,16 +72,18 @@ int main(int argc, char const *argv[])
     if ( confd < 0){
     	printf("errors");
     	}
-    	
-  /*//read from client : 
-    read (confd, buff, sizeof(buff));
-    printf("From client: %s \n", buff);*/
     
     /*
-    send(confd, hello, size,flag);
-    printf("test message sent\n"); */
-
+    //read from client : 
+    read (confd, buff, sizeof(buff));
+    printf("From client: %s \n", buff);
     
+    //send to client
+    send(confd, hello, size,flag);
+    printf("test message sent\n"); 
+		*/
+
+    //if (strncmp("deal", buff, 4) == 0){ //compare the buffer to the string 
     //deal one card to client until the deck is exhasted/*
     for (int i = 0; i < arr_size; i++) {
       int card_num = i + 1;
@@ -92,9 +94,14 @@ int main(int argc, char const *argv[])
       sprintf(buff, "card %u: %u \n", card_num, arr[i]);
       size_t size_int = strlen(buff); 
       send(confd, buff, size_int,flag);
-    }
-    close(socketfd);  
-    break;
+    	}
+    //}
+    
+    
+    //if (strncmp("break", buff, 4) == 0){
+    	close(socketfd);  
+    	break;
+    //}
   }
   return 0;
 }
