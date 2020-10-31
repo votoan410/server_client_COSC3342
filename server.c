@@ -9,27 +9,30 @@
 #include <time.h>
 #define PORT 8000
 
+
 int main(int argc, char const *argv[]) 
 { 
 
   //////////////////////////////////////////////
   int arr_size = 51;
-  int arr[arr_size];// create array of 51 cards
+  int arr [arr_size];
+   
   for (int i = 0; i < arr_size; i++) {
     arr[i] = i+1;
-    printf("value at index %u: %u\n", arr[i], arr[i]);
+    printf("value at index %u: %u\n", arr[i] + 1, arr[i]);
   }
   
-  randperm((int *)arr, arr_size);//shuffle the array 
+  randperm((int *) arr, arr_size);//shuffle the array 
   
   printf("\nafter randperm :\n\n"); 
   
   for (int i = 0; i < arr_size; i++) {
     printf("value at index %u: %u\n", i+1, arr[i]);
   }
-  char buff[100]; //contains integer
-  //////////////////////////////////////////////
   
+  
+  //////////////////////////////////////////////
+  char buff[100]; //contains message string
   
 	char *hello = "hello from the server"; 
   int socketfd, addrlen, n;
@@ -73,35 +76,24 @@ int main(int argc, char const *argv[])
     	printf("errors");
     	}
     
-    /*
-    //read from client : 
-    read (confd, buff, sizeof(buff));
-    printf("From client: %s \n", buff);
     
-    //send to client
-    send(confd, hello, size,flag);
-    printf("test message sent\n"); 
-		*/
-
-    //if (strncmp("deal", buff, 4) == 0){ //compare the buffer to the string 
     //deal one card to client until the deck is exhasted/*
     for (int i = 0; i < arr_size; i++) {
       int card_num = i + 1;
-      printf("sending card %u: %u\n", card_num, arr[i]);  
-           
-      //write to and and send the buffer to client    
-        
-      sprintf(buff, "card %u: %u \n", card_num, arr[i]);
-      size_t size_int = strlen(buff); 
-      send(confd, buff, size_int,flag);
+      printf("sending card %u: %u\n", card_num, arr[i]);           
     	}
-    //}
+    
+    recv(confd, &buff, 100 * sizeof(char), 0); //message recieve from client
+    printf("\n message recieved: %s \n",buff);
+    
+    if (strncmp("deal", buff, 4) == 0){ //compare the buffer to the string 
+      send(confd, &arr, 51 * sizeof(int),0);
+      }
     
     
-    //if (strncmp("break", buff, 4) == 0){
-    	close(socketfd);  
-    	break;
-    //}
+    close(socketfd);  
+    break;
+
   }
   return 0;
 }

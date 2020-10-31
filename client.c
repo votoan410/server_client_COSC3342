@@ -9,10 +9,17 @@
 #include <time.h>
 #define PORT 8000
 
+
 int main(int argc, char const *argv[]) 
 { 
 	
-	int socketfd = socket(AF_INET,SOCK_STREAM,0);
+  if (argc < 2) {
+	  printf ("error! not enough arguments \nusage: ./client <IP> <PORT>\n");
+	  exit(0);
+  }
+
+
+  int socketfd = socket(AF_INET,SOCK_STREAM,0);
   //(unsigned short)strtoul(argv[1], NULL, 0)
   
   
@@ -24,14 +31,26 @@ int main(int argc, char const *argv[])
   
   int con = connect(socketfd, (struct sockaddr *)&addr, sizeof(addr)); //connect to server
   
-  char buff[1024];
-  while(1){
+
+  int arr[51];///initialize array to recieve
+  char buff[] = "deal";
+  
   	
-  	//send(socketfd, buff, strlen(buff),0); //send to server
-  	recv(socketfd, buff, sizeof(buff),0);
-  	printf("From Server : %s", buff);
+  send(socketfd, &buff, strlen(buff),0); //send to server
+  printf("\nmessage sent\n\n");
+  recv(socketfd, &arr, 51 * sizeof(int),0); //recieve from server
   	
-  	if (con != 0) break; // break if connection closed 
-	}
-	close(socketfd);
+  	 
+	for (int i = 0; i < 51; i++){
+  	  printf("\n Card from Server : %d \n", arr[i]);
+  	}
+  close(socketfd);
 }
+
+
+
+
+
+
+
+
